@@ -1,0 +1,9 @@
+{
+  "electrified": {
+    "category": "block",
+    "sounds": [
+      "usecurity:electrified"
+    ],
+    "subtitle": "usecurity.subtitle.electrified"
+  }
+}

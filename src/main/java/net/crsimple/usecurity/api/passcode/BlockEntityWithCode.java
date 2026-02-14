@@ -1,0 +1,45 @@
+package net.crsimple.usecurity.api.passcode;
+
+import net.crsimple.usecurity.api.SecurityBlockEntity;
+import net.crsimple.usecurity.api.passcode.util.Passcode;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.BlockPos;
+
+public abstract class BlockEntityWithCode extends SecurityBlockEntity implements CodeBreakable {
+    protected Passcode code;
+
+    public BlockEntityWithCode(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+    }
+
+    @Override
+    public Passcode getPasscode() {
+        return code;
+    }
+
+    @Override
+    public void setPasscode(Passcode passcode) {
+        this.code = passcode;
+    }
+
+    @Override
+    public boolean shouldBreakCode(PlayerEntity p, ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        this.code = deserializeCode(nbt);
+    }
+
+    @Override
+    protected void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
+        this.saveCode(nbt);
+    }
+}

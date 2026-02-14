@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "usecurity:fake_water",
+    "usecurity:flowing_fake_water"
+  ]
+}

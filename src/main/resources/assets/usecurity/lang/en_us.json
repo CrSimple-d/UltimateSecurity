@@ -1,0 +1,24 @@
+{
+  "itemGroup.usecurity.tech": "UltimateSecurity: Tech",
+  "itemGroup.usecurity.explosive": "Ultimate Security: Explosive",
+  "itemGroup.usecurity.deco": "UltimateSecurity: Deco",
+
+  "death.attack.usecurity.fake_water": "%1$s bathed in poisonous water",
+  "death.attack.usecurity.electricity": "%1$s got electrocuted",
+
+  "block.usecurity.mine": "Mine",
+  "block.usecurity.keypad": "Keypad",
+
+  "item.usecurity.wire_cutters": "Wire Cutters",
+  "item.usecurity.admin_tool": "Admin Tool",
+  "item.usecurity.fake_water_bucket": "Fake Water Bucket",
+  "item.usecurity.fake_lava_bucket": "Fake Lava Bucket",
+  "item.usecurity.codebreaker": "Codebreaker",
+
+  "message.usecurity.passcode.not_set": "Code isn`t set yet",
+  "gui.usecurity.passcode.show_code": "Show code",
+  "gui.usecurity.passcode.setup": "Setup",
+  "message.usecurity.codebreaker.disabled": "Codebreaker Disabled",
+  "tooltip.usecurty.codebreaker.chance": "Success chance: %s",
+  "button.usecurity.save": "Save Code"
+}

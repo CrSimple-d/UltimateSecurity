@@ -1,0 +1,1 @@
+{"variants":{"enabled=true":{"model":"usecurity:block/mine"},"enabled=false":{"model":"usecurity:block/mine_cut"}}}

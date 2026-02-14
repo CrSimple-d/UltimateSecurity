@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "usecurity",
+  "version": "${version}",
+  "name": "UltimateSecurity",
+  "description": "SecurityCraft: Refabricated",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/usecurity/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "net.crsimple.usecurity.client.ModMainDataGenerator"
+    ],
+    "client": [
+      "net.crsimple.usecurity.client.ModMainClient"
+    ],
+    "main": [
+      "net.crsimple.usecurity.ModMain"
+    ]
+  },
+  "mixins": [
+    "usecurity.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

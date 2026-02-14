@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "usecurity:fake_lava",
+    "usecurity:flowing_fake_lava"
+  ]
+}

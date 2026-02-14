@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "usecurity:item/codebreaker"
+  },
+  "overrides": [
+    {
+      "model": "usecurity:item/codebreaker_decoding",
+      "predicate": {
+        "custom_model_data": 1
+      }
+    },
+    {
+      "model": "usecurity:item/codebreaker_failure",
+      "predicate": {
+        "custom_model_data": 2
+      }
+    },
+    {
+      "model": "usecurity:item/codebreaker_success",
+      "predicate": {
+        "custom_model_data": 3
+      }
+    }
+  ]
+}

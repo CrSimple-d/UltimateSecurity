@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "usecurity:keypad",
+    "usecurity:reinforced_iron_door",
+    "usecurity:mine"
+  ]
+}
