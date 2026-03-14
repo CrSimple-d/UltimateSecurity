@@ -2,11 +2,10 @@ package net.crsimple.usecurity.networking;
 
 import net.crsimple.usecurity.ModMain;
 import net.crsimple.usecurity.api.passcode.PasscodeItem;
-import net.crsimple.usecurity.api.passcode.util.Passcode;
+import net.crsimple.usecurity.api.passcode.Passcode;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -16,15 +15,15 @@ public class CheckItemPasscodeC2SPacket implements FabricPacket {
     public static final Identifier PACKET_ID = ModMain.id("check_item_passcode");
     public static final PacketType<CheckItemPasscodeC2SPacket> TYPE = PacketType.create(PACKET_ID, CheckItemPasscodeC2SPacket::new);
     public final ItemStack stack;
-    public final byte[] code;
+    public final String code;
     public int slot;
 
-    public CheckItemPasscodeC2SPacket(ItemStack stack, byte[] code) {
+    public CheckItemPasscodeC2SPacket(ItemStack stack, String code) {
         this.stack = stack;
         this.code = code;
         this.slot = -1;
     }
-    public CheckItemPasscodeC2SPacket(int slot, byte[] code) {
+    public CheckItemPasscodeC2SPacket(int slot, String code) {
         this.slot = slot;
         this.stack = null;
         this.code = code;
@@ -35,7 +34,7 @@ public class CheckItemPasscodeC2SPacket implements FabricPacket {
         } else {
             this.stack = null;
         }
-        this.code = buf.readByteArray();
+        this.code = buf.readString();
     }
 
     @Override
@@ -45,7 +44,7 @@ public class CheckItemPasscodeC2SPacket implements FabricPacket {
         } else {
             buf.writeInt(slot);
         }
-        buf.writeBytes(code);
+        buf.writeString(code);
     }
 
     @Override
@@ -55,8 +54,8 @@ public class CheckItemPasscodeC2SPacket implements FabricPacket {
 
     public void handlePacket(ServerPlayerEntity player, PacketSender packetSender) {
         ItemStack stack = this.stack == null ? player.getInventory().getStack(slot) : this.stack;
-        if(code.length > 0 && stack.getItem() instanceof PasscodeItem passcodeItem) {
-            if (passcodeItem.checkPasscode(stack,new Passcode(code))) {
+        if(!code.isEmpty() && stack.getItem() instanceof PasscodeItem passcodeItem) {
+            if (passcodeItem.checkPasscode(stack,new Passcode(code.getBytes()))) {
                 passcodeItem.onSuccess(player,stack);
             } else {
                 passcodeItem.onIncorrect(player,stack);

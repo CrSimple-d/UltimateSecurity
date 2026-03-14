@@ -8,19 +8,17 @@ import net.crsimple.usecurity.common.screen.BriefcaseSetPasscodeScreen;
 import net.crsimple.usecurity.common.screen.CheckPasscodeScreen;
 import net.crsimple.usecurity.common.screen.SetPasscodeScreen;
 import net.crsimple.usecurity.util.PlayerUtil;
+import net.crsimple.usecurity.util.Utils;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 
 public class OpenScreenS2CPacket implements FabricPacket {
@@ -33,7 +31,7 @@ public class OpenScreenS2CPacket implements FabricPacket {
         this.pos = pos;
         this.type = type;
     }
-    public OpenScreenS2CPacket(Entity entity,ScreenType type) {
+    public OpenScreenS2CPacket(ScreenType type) {
         this.pos = new BlockPos(BlockPos.ZERO);
         this.type = type;
     }
@@ -59,12 +57,12 @@ public class OpenScreenS2CPacket implements FabricPacket {
         switch (type) {
             case CHECK_PASSCODE -> {
                 if (be instanceof PasscodeProtected passcodeProtected) {
-                    client.setScreen(new CheckPasscodeScreen(passcodeProtected,getName(be)));
+                    client.setScreen(new CheckPasscodeScreen(passcodeProtected, Utils.getName(be)));
                 }
             }
             case SET_PASSCODE -> {
                 if (be instanceof PasscodeProtected passcodeProtected) {
-                    client.setScreen(new SetPasscodeScreen(passcodeProtected,getName(be)));
+                    client.setScreen(new SetPasscodeScreen(passcodeProtected, Utils.getName(be)));
                 }
             }
             case SET_PASSCODE_BRIEFCASE -> {
@@ -82,14 +80,10 @@ public class OpenScreenS2CPacket implements FabricPacket {
         }
     }
 
-    public static Text getName(BlockEntity be) {
-        return be instanceof Nameable n ? n.getDisplayName() : Text.translatable(be.getCachedState().getBlock().getTranslationKey());
-    }
-
     public enum ScreenType {
         CHECK_PASSCODE,
         SET_PASSCODE,
         SET_PASSCODE_BRIEFCASE,
-        CHECK_PASSCODE_BRIEFCASE;
+        CHECK_PASSCODE_BRIEFCASE,
     }
 }

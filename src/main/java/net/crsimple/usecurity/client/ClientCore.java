@@ -1,14 +1,18 @@
 package net.crsimple.usecurity.client;
 
+import net.crsimple.usecurity.ModMain;
 import net.crsimple.usecurity.ServerCore;
+import net.crsimple.usecurity.api.ReinforcedManager;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 
@@ -35,6 +39,6 @@ public abstract class ClientCore {
     }
 
     public static boolean shouldBreak(ClientWorld world, BlockPos pos, ClientPlayerEntity player) {
-        return ServerCore.shouldBreak(world,pos,player);
+        return ServerCore.shouldBreak(world, pos, player);
     }
 }

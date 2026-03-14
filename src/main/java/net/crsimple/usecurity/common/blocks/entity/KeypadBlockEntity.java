@@ -14,7 +14,7 @@ public class KeypadBlockEntity extends BlockEntityWithCode {
     }
 
     @Override
-    public void onSuccess(World world, PlayerEntity player) {
+    public void onSuccess(World world, PlayerEntity player, BlockPos pos) {
         world.setBlockState(getPos(),getCachedState().with(KeypadBlock.POWERED,true));
         world.scheduleBlockTick(getPos(),getCachedState().getBlock(),40);
     }

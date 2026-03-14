@@ -4,13 +4,19 @@
   "package": "net.crsimple.usecurity.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractBlockStateMixin",
+    "BlockMixin",
     "EntityMixin",
+    "RegistryEntry$ReferenceMixin",
     "ServerPlayerInteractionManagerMixin"
   ],
   "client": [
+    "BakedModelManagerMixin",
+    "BlockModelsMixin",
     "ClientPlayerInteractionManagerMixin",
     "EditBoxWidgetMixin",
-    "FluidRenderHandlerRegistryImplMixin"
+    "FluidRenderHandlerRegistryImplMixin",
+    "ModelLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

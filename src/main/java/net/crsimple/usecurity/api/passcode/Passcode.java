@@ -1,4 +1,4 @@
-package net.crsimple.usecurity.api.passcode.util;
+package net.crsimple.usecurity.api.passcode;
 
 import net.crsimple.usecurity.api.Signature;
 import net.minecraft.nbt.NbtCompound;

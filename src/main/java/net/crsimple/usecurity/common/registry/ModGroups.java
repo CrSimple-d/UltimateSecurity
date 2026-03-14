@@ -3,6 +3,7 @@ package net.crsimple.usecurity.common.registry;
 import net.crsimple.usecurity.ModMain;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -25,7 +26,7 @@ public class ModGroups {
             .displayName(Text.translatable("itemGroup.usecurity.explosive"))
             .build(), EXPLOSIVE_KEY);
     public static final ItemGroup DECO = reg(FabricItemGroup.builder()
-            .icon(() -> ModBlocks.FAKE_WATER.asItem().getDefaultStack())
+            .icon(() -> Blocks.OBSIDIAN.asItem().getDefaultStack())
             .displayName(Text.translatable("itemGroup.usecurity.deco"))
             .build(), DECO_KEY);
 
@@ -36,5 +37,12 @@ public class ModGroups {
 
     public static void init() {
         ItemGroupEvents.modifyEntriesEvent(EXPLOSIVE_KEY).register(e -> e.add(Items.FLINT_AND_STEEL.getDefaultStack()));
+        ItemGroupEvents.modifyEntriesEvent(TECH_KEY).register(e -> {
+            e.add(ModItems.KEYCARD.createKeycard(0));
+            e.add(ModItems.KEYCARD.createKeycard(1));
+            e.add(ModItems.KEYCARD.createKeycard(2));
+            e.add(ModItems.KEYCARD.createKeycard(3));
+            e.add(ModItems.KEYCARD.createKeycard(4));
+        });
     }
 }

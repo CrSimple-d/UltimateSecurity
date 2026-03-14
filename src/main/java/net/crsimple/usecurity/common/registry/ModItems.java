@@ -8,6 +8,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
 import java.util.function.Function;
@@ -19,10 +20,15 @@ public class ModItems {
     public static final Item BRIEFCASE = reg(BriefcaseItem::new, new Item.Settings().rarity(Rarity.UNCOMMON).maxCount(1),"briefcase", ModGroups.TECH_KEY);
     public static final Item FAKE_LAVA_BUCKET = reg(FakeLavaBucket::new, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1),"fake_lava_bucket", ModGroups.TECH_KEY);
     public static final Item FAKE_WATER_BUCKET = reg(FakeWaterBucket::new, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1),"fake_water_bucket", ModGroups.TECH_KEY);
+    public static final KeycardItem KEYCARD = (KeycardItem) reg(KeycardItem::new, new Item.Settings().maxCount(1),"keycard");
 
     @SafeVarargs
-    public static Item reg(Function<Item.Settings,Item> factory, Item.Settings sett, String id, RegistryKey<ItemGroup>... groups) {
-        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, ModMain.id(id));
+    static Item reg(Function<Item.Settings,Item> factory, Item.Settings sett, String id, RegistryKey<ItemGroup>... groups) {
+        return regRaw(factory,sett,ModMain.id(id),groups);
+    }
+    @SafeVarargs
+    static Item regRaw(Function<Item.Settings,Item> factory, Item.Settings sett, Identifier id, RegistryKey<ItemGroup>... groups) {
+        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, id);
         Item item = factory.apply(sett);
         for (var group : groups) {
             ItemGroupEvents.modifyEntriesEvent(group).register(e -> e.add(item.getDefaultStack()));

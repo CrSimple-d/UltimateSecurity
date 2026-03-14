@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class ReinforcedPaneBlock extends PaneBlock implements Reinforced {
+public class ReinforcedPaneBlock extends PaneBlock implements ReinforcedWithRender.Translucent {
     public ReinforcedPaneBlock(Settings settings) {
         super(settings);
     }

@@ -1,11 +1,13 @@
 package net.crsimple.usecurity.api.passcode;
 
-import net.crsimple.usecurity.api.passcode.util.Passcode;
+import net.crsimple.usecurity.api.SignatureProtected;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -33,6 +35,7 @@ public abstract class PasscodeItem extends Item {
 
     public abstract void onSuccess(ServerPlayerEntity player, ItemStack stack);
     public void onIncorrect(ServerPlayerEntity player, ItemStack stack) {
+        player.getWorld().playSound(null,player.getBlockPos(),SoundEvents.ENTITY_VILLAGER_NO,SoundCategory.NEUTRAL,1f,1f);
     }
 
     public boolean checkPasscode(ItemStack stack, Passcode other) {
@@ -42,9 +45,9 @@ public abstract class PasscodeItem extends Item {
         return getPasscode(stack) != null && getPasscode(stack).hasSignature();
     }
     public Passcode getPasscode(ItemStack stack) {
-        return Passcode.fromNbt(stack.getOrCreateNbt().getCompound(PasscodeProtected.PASSCODE_KEY));
+        return Passcode.fromNbt(stack.getOrCreateNbt().getCompound(SignatureProtected.SIGNATURE_KEY));
     }
     public void setPasscode(ItemStack stack,Passcode passcode) {
-        stack.getOrCreateNbt().put(PasscodeProtected.PASSCODE_KEY,passcode.saveToNbt(new NbtCompound()));
+        stack.getOrCreateNbt().put(SignatureProtected.SIGNATURE_KEY,passcode.saveToNbt(new NbtCompound()));
     }
 }

@@ -1,0 +1,50 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "usecurity:item/keycard/lv1"
+  },
+  "overrides": [
+    {
+      "model": "usecurity:item/keycard/lv1",
+      "predicate": {
+        "usecurity:uses_left": -1
+      }
+    },
+    {
+      "model": "usecurity:item/keycard/lv1",
+      "predicate": {
+        "usecurity:level": 0
+      }
+    },
+    {
+      "model": "usecurity:item/keycard/lv2",
+      "predicate": {
+        "usecurity:level": 1
+      }
+    },
+    {
+      "model": "usecurity:item/keycard/lv3",
+      "predicate": {
+        "usecurity:level": 2
+      }
+    },
+    {
+      "model": "usecurity:item/keycard/lv4",
+      "predicate": {
+        "usecurity:level": 3
+      }
+    },
+    {
+      "model": "usecurity:item/keycard/lv5",
+      "predicate": {
+        "usecurity:level": 4
+      }
+    },
+    {
+      "model": "usecurity:item/keycard/lv6",
+      "predicate": {
+        "usecurity:level": 5
+      }
+    }
+  ]
+}

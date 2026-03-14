@@ -5,7 +5,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -36,9 +36,9 @@ public abstract class BriefcasePasscodeScreen extends Screen {
 
         for (int i = 0; i < 4; i++) {
             final int id = i;
-            ButtonWidget btnUp = ButtonWidget.builder(UP_ARROW,b -> code[id]+=1)
+            ButtonWidget btnUp = ButtonWidget.builder(UP_ARROW,b -> addValue(id,1))
                     .dimensions(width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20).build();
-            ButtonWidget btnDown = ButtonWidget.builder(DOWN_ARROW,b -> code[id]-=1)
+            ButtonWidget btnDown = ButtonWidget.builder(DOWN_ARROW,b -> addValue(id,-1))
                     .dimensions(width / 2 - 40 + (i * 20), height / 2, 20, 20).build();
             TextWidget text = new TextWidget((width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12,Text.literal("0"),textRenderer);
             texts[i] = text;
@@ -60,6 +60,34 @@ public abstract class BriefcasePasscodeScreen extends Screen {
             return true;
         }
         return super.keyPressed(key, scanCode, modifiers);
+    }
+
+    public void addValue(int id,int val) {
+        if (shouldAddValue(id,val)) {
+            code[id]+=(byte)val;
+        }
+    }
+
+    public boolean shouldAddValue(int id,int val) {
+        if(id < code.length && id >= 0) {
+            if (val == 0) return true;
+            if (val > 0) {
+                return code[id] + val <= 9;
+            }
+            return code[id] + val >= 0;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        for (int i = 0; i < texts.length; i++) {
+            if (texts[i].isHovered()) {
+                addValue(i, (int) amount);
+                client.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
+            }
+        }
+        return super.mouseScrolled(mouseX, mouseY, amount);
     }
 
     @Override

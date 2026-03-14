@@ -1,6 +1,8 @@
 package net.crsimple.usecurity.common.items;
 
 import net.crsimple.usecurity.ModMain;
+import net.crsimple.usecurity.api.Signature;
+import net.crsimple.usecurity.api.SignatureProtected;
 import net.crsimple.usecurity.api.schedule.ItemScheduledStateManager;
 import net.crsimple.usecurity.api.SecurityManager;
 import net.crsimple.usecurity.api.passcode.CodeBreakable;
@@ -32,16 +34,17 @@ public class HackerTool extends Item {
         tooltip.add(Text.translatable("tooltip.usecurty.codebreaker.chance",(getChance(stack)*100)+"%").formatted(Formatting.YELLOW));
     }
 
-    public boolean tryToHack(ItemStack stack, PlayerEntity p, CodeBreakable passcodeProtected) {
+    @SuppressWarnings("unchecked")
+    public boolean tryToHack(ItemStack stack, PlayerEntity p, CodeBreakable breakable) {
         if (p.getWorld().isClient) return false;
-        if (!passcodeProtected.hasPasscode()) {
-            PlayerUtil.sendMessage(p, (BlockEntity) passcodeProtected, Text.translatable("message.usecurity.passcode.not_set").formatted(Formatting.DARK_RED));
+        if (!((SignatureProtected<Signature>)breakable).hasSignature()) {
+            PlayerUtil.sendMessage(p, (BlockEntity) breakable, Text.translatable("message.usecurity.passcode.not_set").formatted(Formatting.DARK_RED));
         } else {
             return hack(stack, p);
         }
         return false;
     }
-    public boolean hack(ItemStack stack, PlayerEntity p) {
+    boolean hack(ItemStack stack, PlayerEntity p) {
         if (!p.getWorld().isClient) {
             double chance = getChance(stack);
             if (chance <= 0d) {

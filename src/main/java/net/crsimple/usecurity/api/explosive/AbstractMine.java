@@ -2,7 +2,7 @@ package net.crsimple.usecurity.api.explosive;
 
 import net.crsimple.usecurity.api.owner.BlockWithOwner;
 import net.crsimple.usecurity.api.owner.OwnerProvider;
-import net.crsimple.usecurity.common.registry.ModItemTags;
+import net.crsimple.usecurity.common.registry.ModTags;
 import net.crsimple.usecurity.util.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -69,13 +69,13 @@ public abstract class AbstractMine extends BlockWithOwner implements Defusable {
             world.playSound(null,pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS,1f,1f);
         }
 
-        else if (p.getStackInHand(hand).isIn(ModItemTags.WIRE_CUTTERS) && state.get(ENABLED) && isDefusable()) {
+        else if (p.getStackInHand(hand).isIn(ModTags.ItemTags.WIRE_CUTTERS) && state.get(ENABLED) && isDefusable()) {
             PlayerUtil.damageUnlessCreative(p,p.getStackInHand(hand));
             this.defuse(world, state, pos);
             world.playSound(null,pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS,1f,1f);
         }
 
-        else if (!p.getStackInHand(hand).isIn(ModItemTags.IGNORABLE) && shouldExplode(o,p,world,state,pos)) {
+        else if (!p.getStackInHand(hand).isIn(ModTags.ItemTags.IGNORABLE) && shouldExplode(o,p,world,state,pos)) {
             this.explode(world, state, pos);
         }
 

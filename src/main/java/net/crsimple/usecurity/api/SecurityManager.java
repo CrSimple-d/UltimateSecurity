@@ -10,6 +10,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,17 +21,20 @@ public class SecurityManager {
     public static final String LAST_USED_TIME_KEY = ModMain.createKey("last_used_time");
 
     public static boolean isSecurity(Block b) {
-        return b instanceof BlockWithOwner;
+        return Registries.BLOCK.getId(b).getNamespace().equals(ModMain.ID);
     }
-    public static boolean isSecurity(BlockEntity b) {
-        return b instanceof OwnerProvider;
+    public static boolean isSecurity(Identifier id) {
+        return id.getNamespace().equals(ModMain.ID);
     }
 
     public static boolean isReinforced(BlockState state) {
         return isReinforced(state.getBlock());
     }
     public static boolean isReinforced(Block b) {
-        return b instanceof Reinforced;
+        return ReinforcedManager.isReinforced(b);
+    }
+    public static boolean isReinforced(Identifier id) {
+        return ReinforcedManager.isReinforced(id);
     }
 
     public static void setLastUsedTime(ItemStack stack, long time) {
