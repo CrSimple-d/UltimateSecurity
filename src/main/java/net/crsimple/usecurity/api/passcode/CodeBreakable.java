@@ -18,8 +18,7 @@ public interface CodeBreakable extends Clickable {
         return isCodeBreakable();
     }
 
-    @Override
-    default ActionResult handleClick(World world, PlayerEntity p, Hand hand, BlockHitResult hit) {
+    default boolean tryToHack(World world, PlayerEntity p, Hand hand, BlockHitResult hit) {
         if (!world.isClient && isCodeBreakable()) {
             if (hand == Hand.MAIN_HAND && p.getStackInHand(hand).getItem() instanceof HackerTool hackerTool && shouldBreakCode(p,p.getStackInHand(hand))) {
                 if(hackerTool.tryToHack(p.getStackInHand(hand),p,this)) {
@@ -27,10 +26,10 @@ public interface CodeBreakable extends Clickable {
                 } else {
                     this.onHackingError(world,p,p.getStackInHand(hand),hit.getBlockPos());
                 }
-                return ActionResult.SUCCESS;
+                return true;
             }
         }
-        return ActionResult.PASS;
+        return false;
     }
 
     default void onHackingError(World world, PlayerEntity player, ItemStack stack, BlockPos pos) {

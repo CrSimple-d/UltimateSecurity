@@ -27,8 +27,9 @@ public interface PasscodeProtected extends OwnerProvider, SignatureProtected<Pas
         ScreenHelper.openScreen(player,pos, OpenScreenS2CPacket.ScreenType.SET_PASSCODE);
     }
 
+    @Override
     default ActionResult handleClick(World world, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (CodeBreakable.super.handleClick(world, player, hand, hit) == ActionResult.CONSUME) {
+        if (tryToHack(world, player, hand, hit)) {
             return ActionResult.PASS;
         }
         if (world.isClient || hand == Hand.OFF_HAND) return ActionResult.PASS;
@@ -41,7 +42,7 @@ public interface PasscodeProtected extends OwnerProvider, SignatureProtected<Pas
         } else {
             openPasscodeScreen(hit.getBlockPos(),player);
         }
-        return ActionResult.PASS;
+        return ActionResult.SUCCESS;
     }
 
     @Override Passcode getSignature();

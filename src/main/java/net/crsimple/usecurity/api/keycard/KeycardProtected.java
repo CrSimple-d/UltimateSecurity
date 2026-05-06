@@ -28,8 +28,9 @@ public interface KeycardProtected extends OwnerProvider,SignatureProtected<Signa
 
     void openKeycardScreen(BlockPos pos, PlayerEntity player);
 
+    @Override
     default ActionResult handleClick(World world, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (CodeBreakable.super.handleClick(world, player, hand, hit) == ActionResult.SUCCESS) {
+        if (tryToHack(world, player, hand, hit)) {
             return ActionResult.PASS;
         }
         if (world.isClient || hand == Hand.OFF_HAND) return ActionResult.PASS;
@@ -37,7 +38,7 @@ public interface KeycardProtected extends OwnerProvider,SignatureProtected<Signa
             if (SecurityManager.hasAccess(this,player)) {
                 openKeycardScreen(hit.getBlockPos(), player);
             }
-            return ActionResult.PASS;
+            return ActionResult.SUCCESS;
         }
         ItemStack stack = player.getStackInHand(hand);
         if (ModItems.KEYCARD.isKeycardValid(stack)) {
@@ -48,7 +49,7 @@ public interface KeycardProtected extends OwnerProvider,SignatureProtected<Signa
             }
             ModItems.KEYCARD.onUse(stack);
         }
-        return ActionResult.PASS;
+        return ActionResult.SUCCESS;
     }
 
     private boolean checkKeycard(PlayerEntity player, ItemStack stack) {

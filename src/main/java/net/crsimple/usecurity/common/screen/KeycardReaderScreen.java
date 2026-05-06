@@ -65,12 +65,13 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
         this.renderBackground(ctx);
         super.render(ctx, mouseX, mouseY, delta);
+        this.drawMouseoverTooltip(ctx,mouseX,mouseY);
     }
 
     @Override
     protected void init() {
         super.init();
-        signatureBox = addDrawable(new EditBoxWidget(textRenderer,x + 96,y + 21,40,12,Text.empty(),Text.empty()));
+        signatureBox = addDrawable(new EditBoxWidget(textRenderer,x + 60,y + 16,52,16,Text.empty(),Text.empty()));
         signatureBox.setMaxLength(6);
         signatureBox.setText(previous.toString());
 
@@ -89,7 +90,7 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
         ButtonWidget plusTwo = ButtonWidget.builder(Text.literal("++"),b -> addToSignature(10))
                 .dimensions(x+110,y+35,18,13).build();
         ButtonWidget plusOne = ButtonWidget.builder(Text.literal("+"),b -> addToSignature(1))
-                .dimensions(x+9,y+35,12,13).build();
+                .dimensions(x+94,y+35,12,13).build();
 
         TexturedButtonWidget randomize = new TexturedButtonWidget(x+156,y+35,12,13,10,10,1,RANDOM_SPRITE,10,10,b -> {
             int i = client.world.random.nextBetween(0, SignatureImpl.MAX);
@@ -118,11 +119,12 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
 //        setUsesButton.active = false;
 
         changeModeButton = ButtonWidget.builder(Text.literal(mode.toString()), b -> changeMode())
-                .dimensions(x+135,y+67,18,18).build();
+                .dimensions(x+141,y+64,18,18).build();
 
-        levelBox = addDrawable(new EditBoxWidget(textRenderer,x + 100,y + 67,30,15,Text.empty(),Text.empty()));
+        levelBox = addDrawable(new EditBoxWidget(textRenderer,x + 100,y + 66,30,15,Text.empty(),Text.empty()));
         levelBox.setMaxLength(2);
         levelBox.setMessage(Text.literal(be.getMinLevel()+""));
+        levelBox.setTooltip(Tooltip.of(Text.translatable("tooltip.usecurity.keycard_reader:level_box")));
 
         minusButtons.addAll(List.of(minusOne,minusTwo,minusThree));
         addDrawableChilds(minusThree,minusTwo,minusOne,reset,plusOne,plusTwo,plusThree,randomize, linkButton,changeModeButton,accessBox,usesBox,levelBox);

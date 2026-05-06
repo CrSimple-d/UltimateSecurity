@@ -18,7 +18,7 @@ public abstract class ClickableReinforcedBlock extends ReinforcedBlock {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient && world.getBlockEntity(pos) instanceof Clickable clickable) {
-            clickable.handleClick(world,player,hand,hit);
+            return clickable.handleClick(world,player,hand,hit);
         }
         return super.onUse(state, world, pos, player, hand, hit);
     }
