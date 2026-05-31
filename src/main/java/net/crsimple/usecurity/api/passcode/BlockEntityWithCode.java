@@ -1,5 +1,6 @@
 package net.crsimple.usecurity.api.passcode;
 
+import net.crsimple.usecurity.api.Passcode;
 import net.crsimple.usecurity.api.SecurityBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;

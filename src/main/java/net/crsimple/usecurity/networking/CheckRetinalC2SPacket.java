@@ -1,8 +1,9 @@
 package net.crsimple.usecurity.networking;
 
 import net.crsimple.usecurity.ModMain;
-import net.crsimple.usecurity.api.passcode.PasscodeProtected;
 import net.crsimple.usecurity.api.Passcode;
+import net.crsimple.usecurity.api.passcode.PasscodeProtected;
+import net.crsimple.usecurity.api.retinal.RetinalProtected;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
@@ -12,25 +13,21 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class SetPasscodeC2SPacket implements FabricPacket {
-    public static final Identifier PACKET_ID = ModMain.id("set_passcode");
-    public static final PacketType<SetPasscodeC2SPacket> TYPE = PacketType.create(PACKET_ID, SetPasscodeC2SPacket::new);
+public class CheckRetinalC2SPacket implements FabricPacket {
+    public static final Identifier PACKET_ID = ModMain.id("check_retinal");
+    public static final PacketType<CheckRetinalC2SPacket> TYPE = PacketType.create(PACKET_ID, CheckRetinalC2SPacket::new);
     public final BlockPos pos;
-    public final String code;
 
-    public SetPasscodeC2SPacket(BlockPos pos, String code) {
+    public CheckRetinalC2SPacket(BlockPos pos) {
         this.pos = pos;
-        this.code = code;
     }
-    public SetPasscodeC2SPacket(PacketByteBuf buf) {
+    public CheckRetinalC2SPacket(PacketByteBuf buf) {
         this.pos = buf.readBlockPos();
-        this.code = buf.readString();
     }
 
     @Override
     public void write(PacketByteBuf buf) {
         buf.writeBlockPos(pos);
-        buf.writeString(code);
     }
 
     @Override
@@ -39,8 +36,8 @@ public class SetPasscodeC2SPacket implements FabricPacket {
     }
 
     public void handlePacket(ServerPlayerEntity player, PacketSender packetSender) {
-        BlockEntity be = player.getWorld().getBlockEntity(pos);
-        if(!(be instanceof PasscodeProtected passcodeProtected)) return;
-        passcodeProtected.setSignature(new Passcode(code.getBytes()));
+        if(player.getWorld().getBlockEntity(pos) instanceof RetinalProtected retinalProtected) {
+            retinalProtected.handleLook(player);
+        }
     }
 }

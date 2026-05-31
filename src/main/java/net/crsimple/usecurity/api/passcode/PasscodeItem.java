@@ -1,5 +1,6 @@
 package net.crsimple.usecurity.api.passcode;
 
+import net.crsimple.usecurity.api.Passcode;
 import net.crsimple.usecurity.api.SignatureProtected;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -38,8 +39,8 @@ public abstract class PasscodeItem extends Item {
         player.getWorld().playSound(null,player.getBlockPos(),SoundEvents.ENTITY_VILLAGER_NO,SoundCategory.NEUTRAL,1f,1f);
     }
 
-    public boolean checkPasscode(ItemStack stack, Passcode other) {
-        return hasPasscode(stack) && getPasscode(stack).equals(other);
+    public boolean checkPasscode(ItemStack stack, byte[] code) {
+        return hasPasscode(stack) && getPasscode(stack).validate(code);
     }
     public boolean hasPasscode(ItemStack stack) {
         return getPasscode(stack) != null && getPasscode(stack).hasSignature();

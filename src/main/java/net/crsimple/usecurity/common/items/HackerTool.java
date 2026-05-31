@@ -5,7 +5,7 @@ import net.crsimple.usecurity.api.Signature;
 import net.crsimple.usecurity.api.SignatureProtected;
 import net.crsimple.usecurity.api.schedule.ItemScheduledStateManager;
 import net.crsimple.usecurity.api.SecurityManager;
-import net.crsimple.usecurity.api.passcode.CodeBreakable;
+import net.crsimple.usecurity.api.passcode.Hackable;
 import net.crsimple.usecurity.util.PlayerUtil;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
@@ -35,7 +35,7 @@ public class HackerTool extends Item {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean tryToHack(ItemStack stack, PlayerEntity p, CodeBreakable breakable) {
+    public boolean tryToHack(ItemStack stack, PlayerEntity p, Hackable breakable) {
         if (p.getWorld().isClient) return false;
         if (!((SignatureProtected<Signature>)breakable).hasSignature()) {
             PlayerUtil.sendMessage(p, (BlockEntity) breakable, Text.translatable("message.usecurity.passcode.not_set").formatted(Formatting.DARK_RED));

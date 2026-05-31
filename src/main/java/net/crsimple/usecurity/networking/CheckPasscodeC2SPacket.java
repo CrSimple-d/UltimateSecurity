@@ -2,7 +2,7 @@ package net.crsimple.usecurity.networking;
 
 import net.crsimple.usecurity.ModMain;
 import net.crsimple.usecurity.api.passcode.PasscodeProtected;
-import net.crsimple.usecurity.api.passcode.Passcode;
+import net.crsimple.usecurity.api.Passcode;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
@@ -42,7 +42,7 @@ public class CheckPasscodeC2SPacket implements FabricPacket {
         BlockEntity be = player.getWorld().getBlockEntity(pos);
         if(!(be instanceof PasscodeProtected passcodeProtected)) return;
         byte[] passcode = code.getBytes();
-        if(passcodeProtected.checkSignature(new Passcode(passcode,passcode.length))) {
+        if(passcodeProtected.checkSignature(passcode)) {
             passcodeProtected.onSuccess(player.getWorld(),player,pos);
         } else {
             passcodeProtected.onError(player.getWorld(),player,pos);

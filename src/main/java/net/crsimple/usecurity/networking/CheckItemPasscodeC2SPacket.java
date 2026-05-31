@@ -2,7 +2,7 @@ package net.crsimple.usecurity.networking;
 
 import net.crsimple.usecurity.ModMain;
 import net.crsimple.usecurity.api.passcode.PasscodeItem;
-import net.crsimple.usecurity.api.passcode.Passcode;
+import net.crsimple.usecurity.api.Passcode;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
@@ -55,7 +55,7 @@ public class CheckItemPasscodeC2SPacket implements FabricPacket {
     public void handlePacket(ServerPlayerEntity player, PacketSender packetSender) {
         ItemStack stack = this.stack == null ? player.getInventory().getStack(slot) : this.stack;
         if(!code.isEmpty() && stack.getItem() instanceof PasscodeItem passcodeItem) {
-            if (passcodeItem.checkPasscode(stack,new Passcode(code.getBytes()))) {
+            if (passcodeItem.checkPasscode(stack,code.getBytes())) {
                 passcodeItem.onSuccess(player,stack);
             } else {
                 passcodeItem.onIncorrect(player,stack);

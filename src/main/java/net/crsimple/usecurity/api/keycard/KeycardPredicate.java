@@ -16,7 +16,7 @@ public interface KeycardPredicate {
         return (kp, p, s) -> INVALID_PLAYER.orSuccess(ModItems.KEYCARD.getValidPlayers(s).contains(p.getName().getString()));
     }
     static KeycardPredicate checkSignature() {
-        return (kp, p, s) -> SIGNATURE_ERROR.orSuccess(kp.checkSignature(ModItems.KEYCARD.getSignature(s)));
+        return (kp, p, s) -> SIGNATURE_ERROR.orSuccess(kp.checkSignature(ModItems.KEYCARD.getSignature(s).asBytes()));
     }
     static KeycardPredicate checkLevel() {
         return (kp, p, s) -> INVALID_LEVEL.orSuccess(kp.getLevelMode().test(ModItems.KEYCARD.getLevel(s),kp.getMinLevel()));

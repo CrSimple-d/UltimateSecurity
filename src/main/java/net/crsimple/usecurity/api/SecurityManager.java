@@ -1,13 +1,14 @@
 package net.crsimple.usecurity.api;
 
 import net.crsimple.usecurity.ModMain;
-import net.crsimple.usecurity.api.owner.BlockWithOwner;
 import net.crsimple.usecurity.api.owner.OwnerProvider;
-import net.crsimple.usecurity.api.reinforced.Reinforced;
+import net.crsimple.usecurity.common.registry.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -52,7 +53,7 @@ public class SecurityManager {
     }
 
     public static boolean hasAccess(OwnerProvider be, PlayerEntity p) {
-        return be.hasOwner() && be.ownerId().equals(p.getUuid());
+        return be.hasOwner() && be.ownerId().equals(p.getUuid()) && !isIncognito(p);
     }
     public static boolean hasAccess(OwnerProvider be, Entity e) {
         return e instanceof PlayerEntity p && hasAccess(be,p);
@@ -61,6 +62,12 @@ public class SecurityManager {
         return be instanceof OwnerProvider o && hasAccess(o,e);
     }
 
+    public static boolean isIncognito(LivingEntity e) {
+        return e.getEquippedStack(EquipmentSlot.HEAD).getItem() == ModItems.INCOGNITO_MASK;
+    }
+    public static boolean isAdminToolAtPrimarySlot(PlayerEntity p) {
+        return p.getMainHandStack().getItem() == ModItems.ADMIN_TOOL;
+    }
     public static Optional<OwnerProvider> convertToOwnable(World w, BlockPos pos) {
         return convertToOwnable(w.getBlockEntity(pos));
     }

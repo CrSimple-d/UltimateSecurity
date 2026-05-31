@@ -22,6 +22,9 @@ public class ModItems {
     public static final Item FAKE_WATER_BUCKET = reg(FakeWaterBucket::new, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1),"fake_water_bucket", ModGroups.TECH_KEY);
     public static final KeycardItem KEYCARD = (KeycardItem) reg(KeycardItem::new, new Item.Settings().maxCount(1),"keycard");
 
+    public static final Item INCOGNITO_MASK = reg(s -> new ArmorItem(ArmorMaterials.LEATHER, ArmorItem.Type.HELMET, s), new Item.Settings(),"incognito_mask", ModGroups.TECH_KEY);
+
+
     @SafeVarargs
     static Item reg(Function<Item.Settings,Item> factory, Item.Settings sett, String id, RegistryKey<ItemGroup>... groups) {
         return regRaw(factory,sett,ModMain.id(id),groups);
