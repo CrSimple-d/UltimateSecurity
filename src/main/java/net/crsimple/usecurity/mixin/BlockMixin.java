@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Deprecated
 @Mixin(Block.class)
 public abstract class BlockMixin {
     @Inject(method = "getTranslationKey",at = @At("HEAD"), cancellable = true)

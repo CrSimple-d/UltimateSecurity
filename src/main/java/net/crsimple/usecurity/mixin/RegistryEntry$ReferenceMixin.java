@@ -3,6 +3,7 @@ package net.crsimple.usecurity.mixin;
 import net.crsimple.usecurity.api.ReinforcedManager;
 import net.crsimple.usecurity.api.SecurityManager;
 import net.crsimple.usecurity.api.reinforced.Reinforced;
+import net.crsimple.usecurity.api.wrapper.SecurityBlockWrapper;
 import net.crsimple.usecurity.common.registry.ModTags;
 import net.crsimple.usecurity.compat.ModCompats;
 import net.minecraft.block.Block;
@@ -29,10 +30,9 @@ public abstract class RegistryEntry$ReferenceMixin {
 
     @Inject(method = "setTags",at = @At("HEAD"),cancellable = true)
     private void setTags(Collection<TagKey> tags, CallbackInfo ci) {
-        if (!SecurityManager.isSecurity(registryKey.getValue()) && ReinforcedManager.isReinforced(registryKey.getValue())) {
-            Block b = ReinforcedManager.fromReinforced((Reinforced)Registries.BLOCK.get(registryKey.getValue()));
-            List<TagKey<Block>> list = b.getRegistryEntry().streamTags().toList();
-            if (b != null && !tags.containsAll(list)) {
+        if (Registries.BLOCK.get(registryKey.getValue()) instanceof SecurityBlockWrapper wrapper) {
+            List<TagKey<Block>> list = wrapper.getWrappedBlock().getRegistryEntry().streamTags().toList();
+            if (!tags.containsAll(list)) {
                 tags.addAll(list);
                 tags.add(ModTags.BlockTags.REINFORCED);
                 if (ModCompats.getCarryonBlacklist() != null) {

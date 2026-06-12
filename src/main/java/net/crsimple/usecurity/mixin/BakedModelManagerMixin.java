@@ -1,8 +1,6 @@
 package net.crsimple.usecurity.mixin;
 
-import net.crsimple.usecurity.api.ReinforcedManager;
-import net.crsimple.usecurity.api.SecurityManager;
-import net.crsimple.usecurity.api.reinforced.Reinforced;
+import net.crsimple.usecurity.api.wrapper.SecurityBlockWrapper;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.util.ModelIdentifier;
@@ -20,8 +18,8 @@ public abstract class BakedModelManagerMixin {
 
     @Inject(method = "getModel", at = @At("HEAD"),cancellable = true)
     private void getModel(ModelIdentifier id, CallbackInfoReturnable<BakedModel> cir) {
-        if (!SecurityManager.isSecurity(id) && Registries.BLOCK.get(Identifier.of(id.getNamespace(),id.getPath())) instanceof Reinforced reinforced) {
-            id = new ModelIdentifier(Registries.BLOCK.getId(ReinforcedManager.fromReinforced(reinforced)), id.getVariant());
+        if (Registries.BLOCK.get(Identifier.of(id.getNamespace(),id.getPath())) instanceof SecurityBlockWrapper wrapper) {
+            id = new ModelIdentifier(Registries.BLOCK.getId(wrapper.getWrappedBlock()), id.getVariant());
             //ModMain.LOGGER.info("loaded reinforced resource: {}", id);
             cir.setReturnValue(getModel(id));
         }

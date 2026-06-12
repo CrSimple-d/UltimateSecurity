@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class ReinforcedButtonBlock extends ButtonBlock implements Reinforced {
 
     public ReinforcedButtonBlock(Settings settings, BlockSetType blockSetType, int pressTicks, boolean wooden) {
