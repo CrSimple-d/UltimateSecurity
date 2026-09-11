@@ -27,13 +27,14 @@ import net.crsimple.usecurity.api.SignatureImpl;
 
 public abstract class KeycardBlockEntity extends SecurityBlockEntity implements KeycardProtected, ExtendedScreenHandlerFactory, ImplementedContainer {
     public static final String DATA_KEY = ModMain.createKey("keycard_block_data");
-    protected DefaultedList<ItemStack> inv = DefaultedList.ofSize(26,ItemStack.EMPTY);
+    protected DefaultedList<ItemStack> inv;
     protected int minLevel;
     protected LevelMode mode;
     protected SignatureImpl signature;
 
-    public KeycardBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public KeycardBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int size) {
         super(type, pos, state);
+        this.inv = DefaultedList.ofSize(size,ItemStack.EMPTY);
     }
 
     @Override

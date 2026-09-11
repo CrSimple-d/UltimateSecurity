@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class KeycardReaderBlockEntity extends KeycardBlockEntity {
     public KeycardReaderBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.KEYCARD_READER, pos, state);
+        super(ModBlockEntities.KEYCARD_READER, pos, state,1);
     }
 
     @Override
