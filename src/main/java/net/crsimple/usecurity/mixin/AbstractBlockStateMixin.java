@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
 
+@Deprecated
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public abstract class AbstractBlockStateMixin {
     @Redirect(method = "getDroppedStacks",at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getDroppedStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/loot/context/LootContextParameterSet$Builder;)Ljava/util/List;"))

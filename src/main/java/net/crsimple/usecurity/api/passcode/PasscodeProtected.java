@@ -1,5 +1,6 @@
 package net.crsimple.usecurity.api.passcode;
 
+import net.crsimple.usecurity.api.Passcode;
 import net.crsimple.usecurity.api.SecurityManager;
 import net.crsimple.usecurity.api.SignatureProtected;
 import net.crsimple.usecurity.api.owner.OwnerProvider;
@@ -19,7 +20,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public interface PasscodeProtected extends OwnerProvider, SignatureProtected<Passcode>, CodeBreakable {
+public interface PasscodeProtected extends OwnerProvider, SignatureProtected<Passcode>, Hackable {
     default void openPasscodeScreen(BlockPos pos, PlayerEntity player) {
         ScreenHelper.openScreen(player,pos, OpenScreenS2CPacket.ScreenType.CHECK_PASSCODE);
     }

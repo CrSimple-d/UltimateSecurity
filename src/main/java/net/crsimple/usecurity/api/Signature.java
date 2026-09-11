@@ -3,15 +3,20 @@ package net.crsimple.usecurity.api;
 import net.crsimple.usecurity.ModMain;
 import net.minecraft.nbt.NbtCompound;
 
+import java.util.Arrays;
+
 public interface Signature {
-    String CODE_KEY = ModMain.createKey("code");
+    String CODE_KEY = ModMain.createKey("hash");
+    String SIZE_KEY = ModMain.createKey("size");
 
-    byte[] code();
+    byte[] asBytes();
 
-    boolean equals(Object other);
+    default boolean validate(byte[] other) {
+        return Arrays.equals(asBytes(),other);
+    }
 
     default int size() {
-        return code().length;
+        return asBytes().length;
     }
 
     default boolean hasSignature() {
@@ -19,7 +24,8 @@ public interface Signature {
     }
 
     default NbtCompound saveToNbt(NbtCompound nbt) {
-        nbt.putByteArray(CODE_KEY,code());
+        nbt.putByteArray(CODE_KEY, asBytes());
+        nbt.putInt("size",size());
         return nbt;
     }
 }

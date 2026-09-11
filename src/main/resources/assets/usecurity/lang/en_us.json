@@ -14,17 +14,19 @@
   "item.usecurity.fake_water_bucket": "Fake Water Bucket",
   "item.usecurity.fake_lava_bucket": "Fake Lava Bucket",
   "item.usecurity.codebreaker": "Codebreaker",
-  "item.usecurity.keycard": "Level %s Keycard",
+  "item.usecurity.keycard": "Level %1$s Keycard",
 
   "message.usecurity.passcode.not_set": "Code isn`t set yet",
   "gui.usecurity.passcode.show_code": "Show code",
   "gui.usecurity.passcode.setup": "Setup",
   "message.usecurity.codebreaker.disabled": "Codebreaker Disabled",
-  "tooltip.usecurty.codebreaker.chance": "Success chance: %s",
+  "tooltip.usecurty.codebreaker.chance": "Success chance: %1$s",
   "button.usecurity.save": "Save Code",
   "tooltip.usecuity.keycard_reader.random": "Randomize",
   "tooltip.usecurity.keycard_reader.players": "Enter player names, who has access to use keycard, through a comma\nEmpty - all players\nExample: Friend1, Friend2, Friend3, etc.",
   "tooltip.usecurity.keycard_reader.uses": "Count of keycard uses.\nEmpty or -1 is infinite",
   "gui.usecurity.keycard_reader.link_button": "Link",
-  "tooltip.usecurity.keycard_reader:level_box": "Keycard Level"
+  "tooltip.usecurity.keycard_reader:level_box": "Keycard Level",
+  "message.usecurity.retinal:success": "Hello %1$s",
+  "message.usecurity.retinal:error": "No access"
 }

@@ -2,7 +2,10 @@ package net.crsimple.usecurity.common.registry;
 
 import net.crsimple.usecurity.ModMain;
 import net.crsimple.usecurity.api.ReinforcedManager;
+import net.crsimple.usecurity.api.SecurityManager;
 import net.crsimple.usecurity.api.reinforced.*;
+import net.crsimple.usecurity.api.wrapper.ReinforcedBlockWrapper;
+import net.crsimple.usecurity.api.wrapper.SecurityBlockWrapper;
 import net.crsimple.usecurity.common.blocks.block.KeycardReaderBlock;
 import net.crsimple.usecurity.common.blocks.block.KeypadBlock;
 import net.crsimple.usecurity.common.blocks.block.Mine;
@@ -18,6 +21,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ import java.util.function.Function;
 
 public class ModBlocks {
     static final List<Block> REINFORCED = new ArrayList<>();
+    public static final String REINFORCED_PREFIX = "rreinforced_";
 
     public static final Block MINE = reg(Mine::new,AbstractBlock.Settings.create().strength(3.5f).mapColor(MapColor.BLACK).sounds(BlockSoundGroup.METAL),"mine", ModGroups.EXPLOSIVE_KEY);
     public static final Block FAKE_LAVA = reg((s) -> new FluidBlock(ModFluids.STILL_FAKE_LAVA,s), FabricBlockSettings.copy(Blocks.LAVA),"fake_lava", ModGroups.DECO_KEY);
@@ -46,18 +51,14 @@ public class ModBlocks {
         REINFORCED.add(block);
         return block;
     }
+
     @SafeVarargs
     private static Block reg(Function<AbstractBlock.Settings,Block> factory, AbstractBlock.Settings sett, String id, boolean shouldRegisterItem, RegistryKey<ItemGroup>... groups) {
-        Block block = regRaw(factory,sett,ModMain.id(id));
+        Block block = regRaw(factory.apply(sett),ModMain.id(id));
         if (shouldRegisterItem) {
             ModItems.reg(s -> new BlockItem(block, s), new Item.Settings(), id, groups);
         }
         return block;
-    }
-
-    private static Block regRaw(Function<AbstractBlock.Settings,Block> factory, AbstractBlock.Settings sett, Identifier id) {
-        RegistryKey<Block> key = RegistryKey.of(Registries.BLOCK.getKey(), id);
-        return Registry.register(Registries.BLOCK, key, factory.apply(sett));
     }
 
     public static void init() {
@@ -66,20 +67,27 @@ public class ModBlocks {
 
     private static void registerReinforcedBlocks() {
         for(Block block : Registries.BLOCK) {
-            if (block.getClass() == Block.class) {
-                reg(block,ReinforcedBlock::new);
-            } else if (block instanceof PaneBlock) {
-                reg(block,ReinforcedPaneBlock::new);
-            } else if (block instanceof LeverBlock) {
-                reg(block,ReinforcedLeverBlock::new);
+            if (block.getClass() == Block.class || block instanceof StairsBlock) {
+                reg(block,ReinforcedBlockWrapper::create);
+            } else if(block instanceof LeverBlock || block instanceof ButtonBlock) {
+                reg(block,ReinforcedBlockWrapper::create);
             }
         }
         ReinforcedManager.setReinforcedBlocks(REINFORCED);
     }
 
-    private static void reg(Block block,Function<AbstractBlock.Settings,Block> factory) {
-        Block b = regRaw(factory,FabricBlockSettings.copy(block).strength(block.getHardness()*1.5f),Registries.BLOCK.getId(block).withPrefixedPath("reinforced_"));
-        ModItems.regRaw(s -> new BlockItem(b, s), new Item.Settings(), Registries.BLOCK.getId(block).withPrefixedPath("reinforced_"), ModGroups.DECO_KEY);
+    private static void reg(Block block,Function<Block,SecurityBlockWrapper> factory) {
+        Block b = regRaw(factory.apply(block), createIdentifier(block));
+        ModItems.regRaw(s -> new BlockItem(b, s), new Item.Settings(), createIdentifier(block), ModGroups.DECO_KEY);
         REINFORCED.add(b);
+    }
+
+    private static @Nullable Identifier createIdentifier(Block block) {
+        return Registries.BLOCK.getId(block).withPrefixedPath(REINFORCED_PREFIX);
+    }
+
+    private static Block regRaw(Block block, Identifier id) {
+        RegistryKey<Block> key = RegistryKey.of(Registries.BLOCK.getKey(), id);
+        return Registry.register(Registries.BLOCK, key, block);
     }
 }

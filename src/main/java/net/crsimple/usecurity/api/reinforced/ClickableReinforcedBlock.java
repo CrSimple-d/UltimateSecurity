@@ -24,7 +24,7 @@ public abstract class ClickableReinforcedBlock extends ReinforcedBlock {
     }
 
     @Override
-    public boolean shouldInteract(SecurityBlockEntity be) {
+    public boolean shouldInteract(SecurityBlockEntity be,PlayerEntity p) {
         return true;
     }
 }

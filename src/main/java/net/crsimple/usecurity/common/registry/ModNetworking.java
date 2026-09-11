@@ -12,6 +12,7 @@ public class ModNetworking {
         ServerPlayNetworking.registerGlobalReceiver(SetItemPasscodeC2SPacket.TYPE,SetItemPasscodeC2SPacket::handlePacket);
         ServerPlayNetworking.registerGlobalReceiver(UpdateKeycardC2SPacket.TYPE, UpdateKeycardC2SPacket::handlePacket);
         ServerPlayNetworking.registerGlobalReceiver(UpdateKeycardReaderC2SPacket.TYPE, UpdateKeycardReaderC2SPacket::handlePacket);
+        ServerPlayNetworking.registerGlobalReceiver(CheckRetinalC2SPacket.TYPE, CheckRetinalC2SPacket::handlePacket);
 
         ClientPlayNetworking.registerGlobalReceiver(OpenScreenS2CPacket.TYPE,OpenScreenS2CPacket::handlePacket);
     }

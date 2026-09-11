@@ -4,13 +4,12 @@ import net.crsimple.usecurity.api.Clickable;
 import net.crsimple.usecurity.common.items.HackerTool;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public interface CodeBreakable extends Clickable {
+public interface Hackable extends Clickable {
     default boolean isCodeBreakable() {
         return true;
     }

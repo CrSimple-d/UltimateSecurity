@@ -4,7 +4,7 @@ import net.crsimple.usecurity.ModMain;
 import net.crsimple.usecurity.api.SecurityManager;
 import net.crsimple.usecurity.api.SignatureProtected;
 import net.crsimple.usecurity.api.owner.OwnerProvider;
-import net.crsimple.usecurity.api.passcode.CodeBreakable;
+import net.crsimple.usecurity.api.passcode.Hackable;
 import net.crsimple.usecurity.common.registry.ModItems;
 import net.crsimple.usecurity.util.PlayerUtil;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +22,7 @@ import static net.crsimple.usecurity.common.items.KeycardItem.LEVEL_KEY;
 
 import net.crsimple.usecurity.api.SignatureImpl;
 
-public interface KeycardProtected extends OwnerProvider,SignatureProtected<SignatureImpl>, CodeBreakable {
+public interface KeycardProtected extends OwnerProvider,SignatureProtected<SignatureImpl>, Hackable {
     KeycardValidator VALIDATOR = KeycardValidator.ALL;
     String MODE_KEY = ModMain.createKey("mode");
 

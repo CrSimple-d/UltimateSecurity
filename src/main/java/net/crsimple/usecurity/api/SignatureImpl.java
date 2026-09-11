@@ -3,6 +3,7 @@ package net.crsimple.usecurity.api;
 import net.minecraft.nbt.NbtCompound;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class SignatureImpl implements Signature {
     public static final int MAX = 999999;
@@ -19,7 +20,7 @@ public class SignatureImpl implements Signature {
     }
 
     @Override
-    public byte[] code() {
+    public byte[] asBytes() {
         return code;
     }
 

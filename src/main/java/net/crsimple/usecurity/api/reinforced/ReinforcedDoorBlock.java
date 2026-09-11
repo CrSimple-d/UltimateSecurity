@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class ReinforcedDoorBlock extends DoorBlock implements Reinforced {
     public ReinforcedDoorBlock(Settings settings, BlockSetType blockSetType) {
         super(settings, blockSetType);

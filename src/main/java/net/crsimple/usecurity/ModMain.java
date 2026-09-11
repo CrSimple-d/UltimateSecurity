@@ -1,8 +1,10 @@
 package net.crsimple.usecurity;
 
+import net.crsimple.usecurity.api.reflection.ReflectionApi;
 import net.crsimple.usecurity.common.registry.*;
 import net.crsimple.usecurity.compat.ModCompats;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ public class ModMain implements ModInitializer {
         ModDamageTypes.init();
         ModNetworking.init();
         ModCompats.init();
+        ReflectionApi.init();
         LOGGER.info("SecurityCraft: Refabricated Initialized");
     }
 

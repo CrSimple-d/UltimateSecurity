@@ -10,8 +10,8 @@ public interface SignatureProtected<T extends Signature> extends Protected {
     T getSignature();
     void setSignature(T signature);
 
-    default boolean checkSignature(T other) {
-        return other != null && hasSignature() && getSignature().equals(other);
+    default boolean checkSignature(byte[] bytes) {
+        return bytes != null && hasSignature() && getSignature().validate(bytes);
     }
 
     default boolean hasSignature() {

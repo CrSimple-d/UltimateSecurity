@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements Reinforced {
     public ReinforcedFenceGateBlock(Settings settings,WoodType type) {
         super(settings,type);
