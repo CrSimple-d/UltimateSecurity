@@ -6,10 +6,12 @@ import net.crsimple.usecurity.api.SignatureProtected;
 import net.crsimple.usecurity.api.owner.OwnerProvider;
 import net.crsimple.usecurity.api.passcode.Hackable;
 import net.crsimple.usecurity.common.registry.ModItems;
+import net.crsimple.usecurity.common.registry.ModTags;
 import net.crsimple.usecurity.util.PlayerUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -23,7 +25,7 @@ import static net.crsimple.usecurity.common.items.KeycardItem.LEVEL_KEY;
 import net.crsimple.usecurity.api.SignatureImpl;
 
 public interface KeycardProtected extends OwnerProvider,SignatureProtected<SignatureImpl>, Hackable {
-    KeycardValidator VALIDATOR = KeycardValidator.ALL;
+    KeycardValidator DEFAULT_VALIDATOR = KeycardValidator.ALL;
     String MODE_KEY = ModMain.createKey("mode");
 
     void openKeycardScreen(BlockPos pos, PlayerEntity player);
@@ -33,27 +35,29 @@ public interface KeycardProtected extends OwnerProvider,SignatureProtected<Signa
         if (tryToHack(world, player, hand, hit)) {
             return ActionResult.PASS;
         }
-        if (world.isClient || hand == Hand.OFF_HAND) return ActionResult.PASS;
-        if (!hasSignature()) {
+        if (world.isClient /*|| hand == Hand.OFF_HAND*/) return ActionResult.PASS;
+        if (Registries.ITEM.getEntry(player.getMainHandStack().getItem()).isIn(ModTags.ItemTags.IGNORABLE)) {
             if (SecurityManager.hasAccess(this,player)) {
                 openKeycardScreen(hit.getBlockPos(), player);
             }
             return ActionResult.SUCCESS;
         }
         ItemStack stack = player.getStackInHand(hand);
-        if (ModItems.KEYCARD.isKeycardValid(stack)) {
-            if (checkKeycard(player, stack)) {
-                onSuccess(world, player, hit.getBlockPos());
-            } else {
-                onError(world, player, hit.getBlockPos());
-            }
-            ModItems.KEYCARD.onUse(stack);
+        if (checkKeycard(player, stack)) {
+            onSuccess(world, player, hit.getBlockPos());
+        } else {
+            onError(world, player, hit.getBlockPos());
         }
+        ModItems.KEYCARD.onUse(stack);
         return ActionResult.SUCCESS;
     }
 
     private boolean checkKeycard(PlayerEntity player, ItemStack stack) {
-        ValidationResult result = VALIDATOR.validate(this, player, stack);
+        KeycardValidator validator = DEFAULT_VALIDATOR;
+        if(ModItems.KEYCARD.getValidPlayers(stack).isEmpty()) {
+            validator = validator.removePredicate(KeycardPredicate.checkPlayersValid());
+        }
+        ValidationResult result = validator.validate(this, player, stack);
         if (result != ValidationResult.SUCCESS) {
             PlayerUtil.sendMessage(player,stack.getItem(),result.getMessage());
         }

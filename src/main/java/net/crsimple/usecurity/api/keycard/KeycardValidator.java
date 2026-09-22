@@ -4,6 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static net.crsimple.usecurity.api.keycard.KeycardPredicate.*;
@@ -29,8 +30,11 @@ public class KeycardValidator {
     public static KeycardValidator.Builder builder() {
         return new Builder();
     }
-    public List<KeycardPredicate> getPredicates() {
-        return predicates;
+    public KeycardValidator removePredicate(KeycardPredicate predicate) {
+        List<KeycardPredicate> copy = new ArrayList<>();
+        Collections.copy(copy,predicates);
+        copy.remove(predicate);
+        return new KeycardValidator(copy);
     }
 
     public static class Builder {
@@ -49,7 +53,7 @@ public class KeycardValidator {
             if (predicates.isEmpty()) {
                 throw new IllegalStateException("predicates is empty");
             }
-            return new KeycardValidator(predicates);
+            return new KeycardValidator(Collections.unmodifiableList(predicates));
         }
     }
 }

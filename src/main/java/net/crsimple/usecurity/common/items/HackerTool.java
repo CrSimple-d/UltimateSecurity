@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class HackerTool extends Item {
-    public static final int DEFAULT_STATE = 0, SUCCESS_STATE = 3, FAILURE_STATE = 2, DECODING_STATE = 1;
+    public static final int DEFAULT_STATE = -1, SUCCESS_STATE = 0, FAILURE_STATE = 1, DECODING_STATE = 2;
     public static final String SUCCESS_CHANCE_KEY = ModMain.createKey("chance");
 
     public HackerTool(Settings settings) {

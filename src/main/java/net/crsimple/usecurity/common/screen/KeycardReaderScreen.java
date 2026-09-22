@@ -41,7 +41,7 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
     private static final Identifier WARNING_HIGHLIGHTED_SPRITE = new Identifier("world_list/warning_highlighted");
     protected char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'};
     public static final int imageHeight = 256;
-    public static final int imageWeight = 256;
+    public static final int imageWidth = 256;
     private final KeycardBlockEntity be;
     private SignatureImpl previous;
     public LevelMode mode;
@@ -59,6 +59,9 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
         this.be = handler.be;
         this.previous = be.getSignature();
         this.mode = be.getLevelMode();
+        this.playerInventoryTitleY = y + 154;
+        this.backgroundWidth = imageWidth;
+        this.backgroundHeight = imageHeight;
     }
 
     @Override
@@ -106,11 +109,12 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
         usesBox.setMaxLength(3);
 
         linkButton = ButtonWidget.builder(Text.translatable("gui.usecurity.keycard_reader.link_button"), b -> {
-            SignatureImpl signature = new SignatureImpl(signatureBox.getText().getBytes());
-            previous = signature;
-            setSignature(signature);
+            previous = new SignatureImpl(signatureBox.getText().getBytes());
+            //setSignature(signature);
             if (handler.slot.hasStack()) {
                 sync(updateKeycard(handler.slot.getStack().copy()));
+                b.setTooltip(Tooltip.of(Text.translatable("gui.usecurity.keycard_reader.linked")));
+                b.setTooltipDelay(2000);
             }
         }).dimensions(x+8,y+126,70,20).build();
 
@@ -119,7 +123,9 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
 //        setUsesButton.active = false;
 
         changeModeButton = ButtonWidget.builder(Text.literal(mode.toString()), b -> changeMode())
-                .dimensions(x+141,y+64,18,18).build();
+                .dimensions(x+141,y+64,18,18)
+                .tooltip(Tooltip.of(Text.translatable("tooltip.usecurity.keycard_reader.mode")))
+                .build();
 
         levelBox = addDrawable(new EditBoxWidget(textRenderer,x + 100,y + 66,30,15,Text.empty(),Text.empty()));
         levelBox.setMaxLength(2);
@@ -131,18 +137,27 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
         addDrawable(signatureBox);
     }
 
-    private ItemStack updateKeycard(ItemStack copy) {
-        List<String> players = Arrays.stream(accessBox.getText().split(", ")).toList();
-        ModItems.KEYCARD.setValidPlayers(copy,players);
-        ModItems.KEYCARD.setLevel(copy,Integer.parseInt(levelBox.getText()));
-        ModItems.KEYCARD.setSignature(copy,SignatureImpl.fromString(signatureBox.getText()));
-        ModItems.KEYCARD.setUses(copy,Integer.parseInt(usesBox.getText()));
-        return copy;
+    private ItemStack updateKeycard(ItemStack stack) {
+        List<String> players = Arrays.stream(accessBox.getText().trim().split(","))
+                .filter(p -> !p.isEmpty())
+                .toList();
+        ModItems.KEYCARD.setValidPlayers(stack,players);
+        ModItems.KEYCARD.setLevel(stack,parseOrDefault(levelBox,1));
+        ModItems.KEYCARD.setSignature(stack,SignatureImpl.fromString(signatureBox.getText()));
+        ModItems.KEYCARD.setUses(stack, parseOrDefault(usesBox,-1));
+        return stack;
+    }
+
+    private int parseOrDefault(EditBoxWidget box, int fallback) {
+        if (box.getText().isEmpty()) {
+            return fallback;
+        }
+        return Integer.parseInt(box.getText());
     }
 
     private void sync(ItemStack stack) {
         ClientPlayNetworking.send(new UpdateKeycardC2SPacket(stack,be.getPos()));
-        ClientPlayNetworking.send(new UpdateKeycardReaderC2SPacket(be.getPos(),SignatureImpl.fromString(signatureBox.getText()),mode,Integer.parseInt(usesBox.getText())));
+        ClientPlayNetworking.send(new UpdateKeycardReaderC2SPacket(be.getPos(),SignatureImpl.fromString(signatureBox.getText()),mode,parseOrDefault(levelBox,1)));
     }
 
     @SafeVarargs
@@ -171,7 +186,9 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
         if (isValidChar(chr)) {
             levelBox.charTyped(chr,modifiers);
             usesBox.charTyped(chr,modifiers);
-            client.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
+            if (accessBox.active || usesBox.active || levelBox.active) {
+                client.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
+            }
         }
         signatureBox.charTyped(chr, modifiers);
         accessBox.charTyped(chr, modifiers);
@@ -194,7 +211,7 @@ public class KeycardReaderScreen extends HandledScreen<KeycardReaderMenu> {
 
     @Override
     protected void drawBackground(DrawContext ctx, float delta, int mouseX, int mouseY) {
-        ctx.drawTexture(TEXTURE,x,y,0,0,imageWeight,imageHeight);
+        ctx.drawTexture(TEXTURE,x,y,0,0, imageWidth,imageHeight);
     }
 
     public void addToSignature(int i) {

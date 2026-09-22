@@ -16,4 +16,5 @@ public class Utils {
     public static Text getName(BlockEntity be) {
         return be instanceof Nameable n ? n.getDisplayName() : Text.translatable(be.getCachedState().getBlock().getTranslationKey());
     }
+
 }

@@ -42,7 +42,7 @@ public class ItemScheduledStateManager extends Thread {
 
     public record ScheduleValue(int state, long millis) {
         public void apply(ItemStack stack) {
-            stack.getOrCreateNbt().putInt(STATE, state);
+            stack.getOrCreateNbt().putFloat(STATE, state);
         }
     }
 

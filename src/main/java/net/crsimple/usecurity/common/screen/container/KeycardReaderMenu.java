@@ -1,5 +1,6 @@
 package net.crsimple.usecurity.common.screen.container;
 
+import net.crsimple.usecurity.ModMain;
 import net.crsimple.usecurity.api.keycard.KeycardBlockEntity;
 import net.crsimple.usecurity.common.items.KeycardItem;
 import net.crsimple.usecurity.common.registry.ModScreens;
@@ -13,6 +14,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -48,7 +50,6 @@ public class KeycardReaderMenu extends ScreenHandler {
     public ItemStack quickMove(PlayerEntity player, int id) {
         ItemStack copy = ItemStack.EMPTY;
         Slot slot = slots.get(id);
-
         if (slot.hasStack()) {
             ItemStack slotStack = slot.getStack();
 
@@ -98,7 +99,7 @@ public class KeycardReaderMenu extends ScreenHandler {
 
         @Override
         public boolean canInsert(ItemStack stack) {
-            return stack.getItem() instanceof KeycardItem keycard && !keycard.isKeycardValid(stack);
+            return stack.getItem() instanceof KeycardItem keycard;
         }
     }
 }

@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 public class UpdateKeycardReaderC2SPacket implements FabricPacket {
-    public static final Identifier PACKET_ID = ModMain.id("update_keycard");
+    public static final Identifier PACKET_ID = ModMain.id("update_keycard_reader");
     public static final PacketType<UpdateKeycardReaderC2SPacket> TYPE = PacketType.create(PACKET_ID, UpdateKeycardReaderC2SPacket::new);
     public final BlockPos pos;
     public final SignatureImpl signature;
